@@ -18,14 +18,22 @@
         type="button" v-show="false" onclick="updateTodo()">Update Todo</button>
 
     </div>
-    {{allTodos}}
+    <!-- {{allTodos}} -->
 
     <!-- display error prompt on the UI -->
     <p v-if="isError" class="text-center text-red-400">{{errorMessage}}</p>
 
     <!-- TodoList Container  -->
     <section class="mt-12  m-auto" id="todoContainer"> 
-    <RenderTodos />
+    <div v-if='!loading'><RenderTodos /></div>
+    <!-- setting Loading state -->
+    <div v-else>
+    <LoadingState />
+    <LoadingState />
+    <LoadingState />
+    <LoadingState />
+    </div>
+
     </section>
     
 
@@ -40,12 +48,14 @@
 
 <script>
 import RenderTodos from './RenderTodos.vue'
+import LoadingState from './LoadingState.vue'
+import Swal from 'sweetalert2'
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  components:{RenderTodos},
+  name: 'Home-page',
+  components:{RenderTodos,LoadingState},
+
+  //All variable declarations
   data(){
     return{
       todoInput:'',
@@ -53,12 +63,14 @@ export default {
       isError:false,
       todoDB:'',
       allTodos:'',
+      loading:false,
 
+      //New Todo Object
       Todo:{
       id:this.uuid(),
       description:'Add a description...',
       title: '',
-      status:'pending',
+      status:'Pending',
       created_on: Date.now(),
   }
 
@@ -83,21 +95,24 @@ export default {
       }
       else{
         //Saving the todo to Local Storage
+         Swal.fire("Success!", "Your Todo has been Created.", "success");  
         this.todoDB= [...(JSON.parse(localStorage.getItem('DB') )|| []), this.Todo]
         localStorage.setItem('DB', JSON.stringify(this.todoDB))
-        
-        console.log('saving',this.Todo)
         this.Todo.title=''
-       this.allTodos=(JSON.parse(localStorage.getItem('DB') )|| [])
+        
       }
     },
 
-    mounted(){
-      this.allTodos=(JSON.parse(localStorage.getItem('DB') )|| [])
-      console.log(this.allTodos)
-      console.log("first")
-       console.log('Component has been mounted');
-    }
+    created(){
+
+    // Use setTimeout to set loading to false after 3 seconds
+    setTimeout(() => {
+      this.loading = true;
+    }, 3000);
+
+
+
+    },
    
   }
 }

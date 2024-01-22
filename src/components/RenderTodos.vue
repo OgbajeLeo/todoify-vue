@@ -1,7 +1,11 @@
 <template>
 <div>
-   <div v-for="todo in todoss" :key="todo.id"
-   class="group flex items-center justify-between p-2 mb-4 rounded-md w-full h-16 ${todo.status === 'Done' ? 'line-through text-green-600 bg-slate-100 hover:bg-slate-200' : 'bg-slate-100 hover:bg-slate-200'} shadow-md">
+   <div v-for="todo in todos" :key="todo.id"
+   class="group flex items-center justify-between p-2 mb-4 rounded-md w-full h-16 $
+   
+   {todo.status === 'Done' ? 'line-through text-green-600 bg-slate-100 hover:bg-slate-200' : 'bg-slate-100 hover:bg-slate-200'} shadow-md">
+            
+            
             <div class='flex text-center items-center justify-center gap-2'>
             <span class="text-gray-500 animate-pulse"
             v-if="todo.status === 'Done'" >
@@ -31,16 +35,20 @@
 export default {
     name:'RenderTodos',
     props:{
-            todos:Array
+            // todos:Array
     },
     data(){return{
-            todoss:Array
+            todos:Array
     }},
     mounted(){
-        this.todoss=(JSON.parse(localStorage.getItem('DB') )|| [])
-        console.log(this.todoss)
-    }
+        this.todos=(JSON.parse(localStorage.getItem('DB') )|| [])
+        this.todos=this.todos.sort((a, b) => {
+    if (a.created_on > b.created_on) return -1
+    if (a.created_on < b.created_on) return 1
+    return 0
 
+    }) 
+},
 }
 </script>
 
