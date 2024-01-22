@@ -25,7 +25,7 @@
 
     <!-- TodoList Container  -->
     <section class="mt-12  m-auto" id="todoContainer"> 
-    <div v-if='!loading'><RenderTodos /></div>
+    <div v-if='loading'><RenderTodos /></div>
     <!-- setting Loading state -->
     <div v-else>
     <LoadingState />
@@ -101,9 +101,9 @@ export default {
         this.Todo.title=''
         
       }
-    },
-
-    created(){
+    }, 
+  },
+   mounted(){
 
     // Use setTimeout to set loading to false after 3 seconds
     setTimeout(() => {
@@ -113,8 +113,6 @@ export default {
 
 
     },
-   
-  }
 }
 </script>
 

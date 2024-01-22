@@ -3,7 +3,7 @@
    <div v-for="todo in todos" :key="todo.id"
    class="group flex items-center justify-between p-2 mb-4 rounded-md w-full h-16 $
    
-   {todo.status === 'Done' ? 'line-through text-green-600 bg-slate-100 hover:bg-slate-200' : 'bg-slate-100 hover:bg-slate-200'} shadow-md">
+    bg-slate-100 hover:bg-slate-200 shadow-md">
             
             
             <div class='flex text-center items-center justify-center gap-2'>
@@ -14,7 +14,7 @@
             <button id='ok' onclick="todoToProview('${todo.uuid}')" class="font-bold text-black truncate" style='max-width:200px;'>{{todo.title}}</button>
              </div>
             <section class="flex hidden gap-6 group-hover:block">
-                <button onclick="handleEditMode('${todo.uuid}')" title="Edit">
+                <button @click="handleEditMode(todo.id)" title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />   
                 </svg>
@@ -37,12 +37,15 @@ import Swal from 'sweetalert2'
 export default {
     name:'RenderTodos',
     props:{
-            // todos:Array
+      
     },
+            
     data(){return{
-            todos:Array
+            todos:Array,
+            todoField:'',
     }},
     methods:{
+    
     deleteTodo(id){
     Swal.fire({
     title: "Are you sure?",
@@ -61,8 +64,19 @@ export default {
       Swal.fire("Deleted!", "Your Todo has been deleted.", "success");
     }
   });
-}},
+},
+handleEditMode(id){
+  console.log(id)
+
+
+},
+
+},
+
     mounted() {
+console.log("first LEOOOOOOOOOOO")
+
+
         this.todos=(JSON.parse(localStorage.getItem('DB') )|| [])
         this.todos=this.todos.sort((a, b) => {
     if (a.created_on > b.created_on) return -1
