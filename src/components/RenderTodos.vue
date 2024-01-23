@@ -72,18 +72,15 @@ handleEditMode(id){
 },
 
 },
+    created() {
+        const sortedTodo=(JSON.parse(localStorage.getItem('DB') )|| [])
+        this.todos = sortedTodo.sort((a, b) => { 
+          if (a.created_on > b.created_on) return -1; 
+          if (a.created_on < b.created_on) return 1; 
+          return 0; 
+          });
 
-    mounted() {
-console.log("first LEOOOOOOOOOOO")
-
-
-        this.todos=(JSON.parse(localStorage.getItem('DB') )|| [])
-        this.todos=this.todos.sort((a, b) => {
-    if (a.created_on > b.created_on) return -1
-    if (a.created_on < b.created_on) return 1
-    return 0
-
-    }) 
+       
 },
 
 }
