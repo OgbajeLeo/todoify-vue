@@ -120,15 +120,15 @@
       v-if="isHeading"
       class="items-center bg-gray-300 border border-b-slate-300 mt-4 p-2 group"
     >
-      <b class="text-gray-400">Description:</b><br />
+      <b class="text-gray-700">Description:</b><br />
       <code id="description">{{ description }}</code>
     </div>
 
     <div
       v-if="isHeading"
-      class="flex text-xs my-2 items-center justify-between"
+      class="flex my-2 items-center justify-between"
     >
-      <div class="text-gray-300">Added On {{ todoDate() }}</div>
+      <div class="text-gray-300 text-[10px]">Added On {{ todoDate() }}</div>
     </div>
 
     <router-link
@@ -283,8 +283,6 @@ localStorage.setItem("DB", JSON.stringify(todoToUpdate));
     this.previewTodo = allTodo.find(
       (todo) => todo.id === this.$route.params.id
     );
-    console.log(this.previewTodo, "All details");
-    console.log(this.previewTodo.description);
     this.title = this.previewTodo.title;
     this.description = this.previewTodo.description;
     this.status = this.previewTodo.status;

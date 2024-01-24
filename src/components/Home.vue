@@ -88,12 +88,26 @@
                 <circle cx="8" cy="8" r="8" /></svg
             ></span>
             <router-link
+            v-if="todo.status === 'Done'"
+              :to="{name: 'PreviewTodo', params:{id:todo.id}}"
+              class="font-bold line-through text-black
+ truncate"
+              style="max-width: 200px"
+            >
+              {{ todo.title }}
+            </router-link>
+
+            <router-link
+            v-else
               :to="{name: 'PreviewTodo', params:{id:todo.id}}"
               class="font-bold text-black truncate"
               style="max-width: 200px"
             >
               {{ todo.title }}
             </router-link>
+
+
+
           </div>
           <section class="flex hidden gap-6 group-hover:block">
             <button @click="handleEditMode(todo.id)" title="Edit">
