@@ -57,7 +57,7 @@
           {{ previewTodo.title }}
         </div>
 
-        <section class="flex gap-4" id="editDelete">
+        <section class="flex gap-4">
           <button @click="handleEdit" title="Edit">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,7 @@
           </button>
 
           <button
-            class=""
-            id="toggleButton"
-            onclick="toggleTodoStatus()"
+            @click="statusToggle"
             title="Mark done or Pending"
           >
             <svg
@@ -97,7 +95,7 @@
             </svg>
           </button>
 
-          <button class="" onclick="deleteTodo()" title="Delete">
+          <button class="" @click="deleteTodo" title="Delete">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -162,6 +160,7 @@ import Swal from "sweetalert2";
 export default {
   name: "PreviewTodo",
   data() {
+    //Variables Declaration
     return {
       isEdit: false,
       isHeading: true,
@@ -195,12 +194,55 @@ export default {
     },
 
     handleEdit() {
+      //Triggers the Edit mode
       this.isEdit = true;
       this.isHeading = false;
       this.newTitle = this.title;
       this.newDescription = this.description;
     },
+    statusToggle(){
+      //Toggle the status to Done or Pending
+      const db = JSON.parse(localStorage.getItem("DB"));
+      const todoToUpdate = db.map((todo) => {
+    if (todo.id === this.$route.params.id) {
+      return { ...todo, status: this.status === "Done" ? "Pending" : "Done" };
+    } else {
+      return todo;
+    }
+  });
+  // const sound = new Audio("https://res.cloudinary.com/duw4jtxls/video/upload/v1706059903/tone_ohybtl.mp3");
+  // sound.play();
+
+    Swal.fire( todoToUpdate.find((todo) => todo.id === this.$route.params.id).status ===
+"Done" ? "Marked as Done!" : "Marked as Pending!", "", "success" );
+localStorage.setItem("DB", JSON.stringify(todoToUpdate));
+
+
+    },
+    deleteTodo(){
+      //Function to Delete Todo
+      const db = JSON.parse(localStorage.getItem("DB"));
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const filteredDB = db.filter((todo) => todo.id != this.$route.params.id);
+      localStorage.setItem("DB", JSON.stringify(filteredDB));
+      Swal.fire("Deleted!", "Your Todo has been deleted.", "success");
+      window.location.href = "/";
+    }
+  });
+    },
+
+
     update() {
+      //Main update function that update the title and description
       if (this.newTitle === "" || this.newDescription === "") {
         this.isDissabled = true;
         setInterval(() => {
@@ -246,7 +288,6 @@ export default {
     this.title = this.previewTodo.title;
     this.description = this.previewTodo.description;
     this.status = this.previewTodo.status;
-    // this.date = todoDate(this.previewTodo.created_on)
   },
 };
 </script>
