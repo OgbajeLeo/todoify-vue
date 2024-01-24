@@ -87,14 +87,13 @@
               >
                 <circle cx="8" cy="8" r="8" /></svg
             ></span>
-            <button
-              id="ok"
-              onclick="todoToProview('${todo.uuid}')"
+            <router-link
+              :to="{name: 'PreviewTodo', params:{id:todo.id}}"
               class="font-bold text-black truncate"
               style="max-width: 200px"
             >
               {{ todo.title }}
-            </button>
+            </router-link>
           </div>
           <section class="flex hidden gap-6 group-hover:block">
             <button @click="handleEditMode(todo.id)" title="Edit">
@@ -147,17 +146,15 @@
         <LoadingState />
         <LoadingState />
         <LoadingState />
-        <LoadingState />
       </div>
     </section>
 
     <!-- display count of todo -->
     <div
       v-show="loading"
-      class="flex justify-center items-center rounded-full p-1.5 text-gray-400 w-[100px] hover:text-blue-200"
+      class="sm:text-xs flex justify-center items-center rounded-full p-1.5 text-gray-400 w-[100px] hover:text-blue-200"
       id="count"
     >
-      Total {{ count }}
     </div>
   </div>
 </template>
@@ -224,13 +221,15 @@ export default {
     },
     handleEditMode(id) {
       this.todoToEdit = id;
+      //Finding the todo that matches the ID
       const todoEdit = this.todos.find((todo) => todo.id === id);
-      console.log(todoEdit.title);
+      //setting the input to contain the Todo title
       this.Todo.title = todoEdit.title;
       this.addBtn = false;
     },
 
     updateTodo() {
+      // Updating the todo 
       if (this.$refs.inputField.value === "") {
         this.isError = true;
         setTimeout(() => {
@@ -268,6 +267,12 @@ export default {
           ).filter((todo) => todo.id !== id);
           localStorage.setItem("DB", JSON.stringify(filteredDB));
           Swal.fire("Deleted!", "Your Todo has been deleted.", "success");
+          setInterval(() => {
+            window.location.reload();
+
+          }, 2000);
+          
+
         }
       });
       this.todos = JSON.parse(localStorage.getItem("DB")) || [];
@@ -282,23 +287,17 @@ export default {
 
   beforeUpdate() {
     const sortedTodo = JSON.parse(localStorage.getItem("DB")) || [];
-    this.todos = sortedTodo.sort((a, b) => {
-      if (a.created_on > b.created_on) return -1;
-      if (a.created_on < b.created_on) return 1;
-      return 0;
-    });
-    console.log("first");
-    this.count = this.todos.length;
+    this.todos = sortedTodo.sort((a, b) => b>a?1:a>b?-1:0);
+    console.log('Before Update',this.todos)
+
+
   },
-  beforeCreate() {
-    const sortedTodo = JSON.parse(localStorage.getItem("DB")) || [];
-    this.todos = sortedTodo.sort((a, b) => {
-      if (a.created_on > b.created_on) return -1;
-      if (a.created_on < b.created_on) return 1;
-      return 0;
-    });
-    console.log("Updated Afterbefore");
-  },
+//   beforeCreate() {
+//     const sortedTodo = JSON.parse(localStorage.getItem("DB")) || [];
+//     this.todos = sortedTodo.sort((a, b) => b>a?1:a>b?-1:0
+// );
+// console.log('Before Create',this.todos)
+//   },
 };
 </script>
 
