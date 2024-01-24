@@ -3,10 +3,10 @@ This is a simple Todo List application built with Vue.js, incorporating CRUD (Cr
 
 ## Features
 
-Create: Add new tasks to your todo list.
-Read: View and manage your tasks in a list format.
-Update: Edit and update existing tasks easily.
-Delete: Remove tasks you've completed or no longer need.
+Create: Add new tasks to your todo list. <br>
+Read: View and manage your tasks in a list format. <br>
+Update: Edit and update existing tasks easily. <br>
+Delete: Remove tasks you've completed or no longer need. <br>
 Preview Page: View detailed information about each task in a separate preview page.
 
 ## Technologies Used
