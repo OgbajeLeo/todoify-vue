@@ -10,8 +10,8 @@ Delete: Remove tasks you've completed or no longer need. <br>
 Preview Page: View detailed information about each task in a separate preview page.
 
 ## Technologies Used
-Vue.js: A progressive JavaScript framework for building user interfaces.
-HTML/CSS: Structuring and styling the application.
+Vue.js: A progressive JavaScript framework for building user interfaces. <br>
+HTML and TailwindCSS: Structuring and styling the application. <br>
 Local Storage: Utilized for storing task data locally on the user's device.
 
 
